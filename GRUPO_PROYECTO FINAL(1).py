@@ -581,9 +581,9 @@ def menu_busquedas():
         print(" ALGORITMOS DE BÚSQUEDA")
         print("==============================")
         print("1. Buscar Dron por Batería (Lineal)")
-        print("1. Buscar Mision por Batería (Lineal)")
-        print("2. Buscar Dron por Código (Binaria)")
-        print("3. Regresar")
+        print("2. Buscar Mision por Batería (Lineal)")
+        print("3. Buscar Dron por Código (Binaria)")
+        print("4. Regresar")
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
             buscar_lineal_por_bateria()
