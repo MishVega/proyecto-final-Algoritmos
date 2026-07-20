@@ -496,6 +496,9 @@ def menu_organizacion():
 # ==================================
 def buscar_lineal_por_bateria():
     print("\n========== DRON POR BATERÍA ==========")
+    if not drones:
+        print("No hay drones registrados en el sistema.")
+        return
     bateria_buscar = leer_entero("Ingrese el nivel de batería (%) que desea buscar: ")
     print(f"\n[Buscando en Drones con {bateria_buscar}% de batería]")
     comp_drones = 0
@@ -512,27 +515,27 @@ def buscar_lineal_por_bateria():
     if not encontrado_dron:
         print("   No se encontró ningún dron con esa batería.")
 # ==================================
-# Busqueda lineal de dron por bateria
+# Busqueda lineal de dron por prioridad
 # ==================================
-def buscar_lineal_mision_bateria():
-    print("\n========== MISIÓN POR BATERÍA ==========")
+def buscar_lineal_mision_prioridad():
+    print("\n========== MISIÓN POR PRIORIDAD ==========")
     if not misiones:
         print("No hay misiones registradas en el sistema.")
         return
-    bateria_buscar = leer_entero("Ingrese el nivel de batería (%) requerido por la misión: ")
+    prioridad_buscar = leer_entero("Ingrese la prioridad (1-10) de la misión a buscar: ")
     comparaciones = 0
     encontrado = False
     for m in misiones:
         comparaciones += 1
-        bateria_m = m.get("bateria", 75) 
-        print(f"   -> Elemento comparado: Misión Código: {m['codigo']} \n Batería requerida: {bateria_m}%")
-        if bateria_m == bateria_buscar:
-            print(f"\n   ¡Éxito! Misión encontrada en: {m['zona']} \n Emergencia: {m['tipo_emergencia']}")
+        print(f"   -> Elemento comparado: Misión Código: {m['codigo']} | Prioridad: {m['prioridad']}")
+        if m["prioridad"] == prioridad_buscar:
+            print(f"\n   ¡Éxito! Misión encontrada en: {m['zona']} | Emergencia: {m['tipo_emergencia']}")
             encontrado = True
             break
     print(f"   Comparaciones realizadas en Misiones: {comparaciones}")
     if not encontrado:
-        print("   No se encontró ninguna misión con ese porcentaje de batería.")
+        print("   No se encontró ninguna misión con ese nivel de prioridad.")
+
 # ==================================
 # Busqueda binaria de dron por codigo
 # ==================================
@@ -542,7 +545,18 @@ def busqueda_binaria_dron_codigo():
         print("No hay drones registrados para buscar.")
         return
     codigo_buscar = input("Ingrese el código del dron a buscar (ej: D001): ").strip()
-    drones_ordenados = sorted(drones, key=lambda x: x["codigo"])    
+    #ORDENAMIENTO MANUAL    
+    drones_ordenados = []
+    for d in drones:
+        drones_ordenados.append(d)
+    n = len(drones_ordenados)
+    for i in range(n):
+        for j in range(n - 1):
+            if drones_ordenados[j]["codigo"] > drones_ordenados[j + 1]["codigo"]:
+                aux = drones_ordenados[j]
+                drones_ordenados[j] = drones_ordenados[j + 1]
+                drones_ordenados[j + 1] = aux
+    #BUSQUEDA   
     low = 0
     high = len(drones_ordenados) - 1
     encontrado = False
